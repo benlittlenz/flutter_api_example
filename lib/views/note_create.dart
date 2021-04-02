@@ -14,8 +14,23 @@ class NoteModify extends StatelessWidget {
             TextField(
               decoration: InputDecoration(hintText: 'Note Title'),
             ),
+            Container(height: 8),
             TextField(
               decoration: InputDecoration(hintText: 'Note Content'),
+            ),
+            Container(height: 16),
+            SizedBox(
+              width: double.infinity,
+              height: 35,
+              child: ElevatedButton(
+                child: Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ],
         ),
