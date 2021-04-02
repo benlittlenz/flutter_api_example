@@ -54,9 +54,15 @@ class NoteList extends StatelessWidget {
               },
               confirmDismiss: (direction) async {
                 return await showDialog(
-                  context: context,
-                  builder: (_) => NoteDelete());
+                    context: context, builder: (_) => NoteDelete());
               },
+              background: Container(
+                color: Colors.red,
+                padding: EdgeInsets.only(left: 16),
+                child: Align(
+                    child: Icon(Icons.delete, color: Colors.white),
+                    alignment: Alignment.centerLeft),
+              ),
               child: ListTile(
                 title: Text(notes[index].title.toString(),
                     style: TextStyle(color: Theme.of(context).primaryColor)),
