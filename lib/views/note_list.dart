@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class NoteList extends StatelessWidget {
+
+  final notes = [
+
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
