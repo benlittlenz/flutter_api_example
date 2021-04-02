@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_requests/models/Note.dart';
+import 'package:flutter_api_requests/views/note_create.dart';
 
 class NoteList extends StatelessWidget {
   final notes = [
@@ -35,7 +36,9 @@ class NoteList extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => NoteModify()),
+          );
         },
         child: Icon(Icons.add),
       ),
@@ -45,7 +48,8 @@ class NoteList extends StatelessWidget {
             return ListTile(
               title: Text(notes[index].title.toString(),
                   style: TextStyle(color: Theme.of(context).primaryColor)),
-              subtitle: Text("Last editied on ${formatDateTime(notes[index].lastEdited)}"),
+              subtitle: Text(
+                  "Last editied on ${formatDateTime(notes[index].lastEdited)}"),
             );
           },
           itemCount: notes.length),
