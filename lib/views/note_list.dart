@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_requests/models/Note.dart';
 import 'package:flutter_api_requests/views/note_create.dart';
+import 'package:flutter_api_requests/views/note_delete.dart';
 
 class NoteList extends StatelessWidget {
   final notes = [
@@ -45,16 +46,29 @@ class NoteList extends StatelessWidget {
       body: ListView.separated(
           separatorBuilder: (_, __) => Divider(height: 1, color: Colors.green),
           itemBuilder: (_, index) {
-            return ListTile(
-              title: Text(notes[index].title.toString(),
-                  style: TextStyle(color: Theme.of(context).primaryColor)),
-              subtitle: Text(
-                  "Last editied on ${formatDateTime(notes[index].lastEdited)}"),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => NoteModify(noteID: notes[index].id)),
-                );
+            return Dismissible(
+              key: ValueKey(notes[index].id),
+              direction: DismissDirection.startToEnd,
+              onDismissed: (direction) {
+                //
               },
+              confirmDismiss: (direction) async {
+                return await showDialog(
+                  context: context,
+                  builder: (_) => NoteDelete());
+              },
+              child: ListTile(
+                title: Text(notes[index].title.toString(),
+                    style: TextStyle(color: Theme.of(context).primaryColor)),
+                subtitle: Text(
+                    "Last editied on ${formatDateTime(notes[index].lastEdited)}"),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (_) => NoteModify(noteID: notes[index].id)),
+                  );
+                },
+              ),
             );
           },
           itemCount: notes.length),
