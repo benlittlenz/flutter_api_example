@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_api_requests/models/API_Response.dart';
 import 'package:flutter_api_requests/models/Note.dart';
 import 'package:flutter_api_requests/services/notes_service.dart';
-import 'package:flutter_api_requests/views/note_create.dart';
+import 'package:flutter_api_requests/views/note_modify.dart';
 import 'package:flutter_api_requests/views/note_delete.dart';
 import 'package:get_it/get_it.dart';
 

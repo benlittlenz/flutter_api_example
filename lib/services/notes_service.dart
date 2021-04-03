@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_api_requests/models/API_Response.dart';
 import 'package:flutter_api_requests/models/Note.dart';
+import 'package:flutter_api_requests/models/NoteCreate.dart';
 import 'package:flutter_api_requests/models/NoteDetail.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,6 +36,18 @@ class NotesService {
         return APIResponse<NoteDetail>(data: NoteDetail.fromJson(res));
       }
       return APIResponse<NoteDetail>(
+          error: true, errorMessage: "An error occured");
+    });
+  }
+
+    Future<APIResponse<bool>> createNote(NoteCreate note) {
+    return http
+        .post(Uri.https(API, '/notes'), headers: headers, body: note.toJson())
+        .then((data) {
+      if (data.statusCode == 201) {
+        return APIResponse<bool>(data: true);
+      }
+      return APIResponse<bool>(
           error: true, errorMessage: "An error occured");
     });
   }
