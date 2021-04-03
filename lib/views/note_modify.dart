@@ -76,10 +76,14 @@ class _NoteModifyState extends State<NoteModify> {
                       style: ElevatedButton.styleFrom(
                         primary: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () async  {
-                        if(isEditing) {
+                      onPressed: () async {
+                        if (isEditing) {
                           //
                         } else {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
                           final note = NoteCreate(
                             title: _titleController.text,
                             content: _contentController.text,
@@ -87,7 +91,13 @@ class _NoteModifyState extends State<NoteModify> {
                           final result = await notesService.createNote(note);
 
                           final title = 'Note successfully created';
-                          final text = result.error ? result.errorMessage : 'Note Created!';
+                          final text = result.error
+                              ? result.errorMessage
+                              : 'Note Created!';
+
+                          setState(() {
+                            _isLoading = true;
+                          });
 
                           showDialog(
                             context: context,
@@ -96,14 +106,17 @@ class _NoteModifyState extends State<NoteModify> {
                               content: Text(text),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text("Ok"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  }
-                                ),
+                                    child: Text("Ok"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    }),
                               ],
                             ),
-                          );
+                          ).then((data) {
+                            if(result.data) {
+                              Navigator.of(context).pop(true);
+                            }
+                          });
                         }
                       },
                     ),
