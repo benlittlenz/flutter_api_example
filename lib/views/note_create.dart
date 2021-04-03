@@ -1,11 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_api_requests/models/NoteDetail.dart';
+import 'package:flutter_api_requests/services/notes_service.dart';
+import 'package:get_it/get_it.dart';
 
-class NoteModify extends StatelessWidget {
+class NoteModify extends StatefulWidget {
 
   final String noteID;
-  bool get isEditing => noteID != null;
-
   NoteModify({this.noteID});
+
+  @override
+  _NoteModifyState createState() => _NoteModifyState();
+}
+
+class _NoteModifyState extends State<NoteModify> {
+  bool get isEditing => widget.noteID != null;
+
+  NotesService get notesService => GetIt.instance<NotesService>();
+
+  String errorMsg;
+  NoteDetail note;
+
+  @override
+  void initState() {
+    notesService.getNote(widget.noteID)
+      .then((res) {
+        if(res.error) {
+          errorMsg = res.errorMessage ?? 'An error occured';
+        }
+        note = res.data;
+      });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
