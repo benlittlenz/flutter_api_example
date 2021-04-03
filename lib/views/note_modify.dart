@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_api_requests/models/NoteCreate.dart';
 import 'package:flutter_api_requests/models/NoteDetail.dart';
 import 'package:flutter_api_requests/services/notes_service.dart';
 import 'package:get_it/get_it.dart';
@@ -75,8 +76,35 @@ class _NoteModifyState extends State<NoteModify> {
                       style: ElevatedButton.styleFrom(
                         primary: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                      onPressed: () async  {
+                        if(isEditing) {
+                          //
+                        } else {
+                          final note = NoteCreate(
+                            title: _titleController.text,
+                            content: _contentController.text,
+                          );
+                          final result = await notesService.createNote(note);
+
+                          final title = 'Note successfully created';
+                          final text = result.error ? result.errorMessage : 'Note Created!';
+
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text(title),
+                              content: Text(text),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text("Ok"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),

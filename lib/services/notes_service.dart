@@ -8,7 +8,10 @@ import 'package:http/http.dart' as http;
 
 class NotesService {
   static const API = 'tq-notes-api-jkrgrdggbq-el.a.run.app';
-  static const headers = {'apiKey': '59a2bb6a-ff85-4adc-aaa8-399bc738ebfa'};
+  static const headers = {
+    'apiKey': '59a2bb6a-ff85-4adc-aaa8-399bc738ebfa',
+    'Content-Type': 'application/json'
+    };
 
   Future<APIResponse<List<Note>>> getNoteList() {
     return http.get(Uri.https(API, '/notes'), headers: headers).then((data) {
@@ -42,7 +45,10 @@ class NotesService {
 
     Future<APIResponse<bool>> createNote(NoteCreate note) {
     return http
-        .post(Uri.https(API, '/notes'), headers: headers, body: note.toJson())
+        .post(
+          Uri.https(API, '/notes'),
+          headers: headers,
+          body: json.encode(note.toJson()))
         .then((data) {
       if (data.statusCode == 201) {
         return APIResponse<bool>(data: true);
