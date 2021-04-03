@@ -25,6 +25,7 @@ class _NoteModifyState extends State<NoteModify> {
 
   @override
   void initState() {
+    super.initState();
     setState(() {
       _isLoading = true;
     });
@@ -39,7 +40,6 @@ class _NoteModifyState extends State<NoteModify> {
       _titleController.text = note.title;
       _contentController.text = note.content;
     });
-    super.initState();
   }
 
   @override
@@ -50,32 +50,35 @@ class _NoteModifyState extends State<NoteModify> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(hintText: 'Note Title'),
-            ),
-            Container(height: 8),
-            TextField(
-              decoration: InputDecoration(hintText: 'Note Content'),
-            ),
-            Container(height: 16),
-            SizedBox(
-              width: double.infinity,
-              height: 35,
-              child: ElevatedButton(
-                child: Text('Submit'),
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                children: <Widget>[
+                  TextField(
+                    controller: _titleController,
+                    decoration: InputDecoration(hintText: 'Note Title'),
+                  ),
+                  Container(height: 8),
+                  TextField(
+                    controller: _contentController,
+                    decoration: InputDecoration(hintText: 'Note Content'),
+                  ),
+                  Container(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 35,
+                    child: ElevatedButton(
+                      child: Text('Submit'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
