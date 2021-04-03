@@ -15,7 +15,7 @@ class NoteList extends StatefulWidget {
 class _NoteListState extends State<NoteList> {
   NotesService get service => GetIt.instance<NotesService>();
 
-  APIResponse<List<Note>> _apiResponse;
+  APIResponse<List<Note>> _notes;
   bool _isLoading = false;
 
   String formatDateTime(DateTime dateTime) {
@@ -28,6 +28,19 @@ class _NoteListState extends State<NoteList> {
     super.initState();
   }
 
+  _fetchNotes() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _notes = await service.getNoteList();
+
+    debugPrint(_notes.toString());
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +56,11 @@ class _NoteListState extends State<NoteList> {
         },
         child: Icon(Icons.add),
       ),
-      body: ListView.separated(
+      body: _isLoading ? CircularProgressIndicator() : ListView.separated(
           separatorBuilder: (_, __) => Divider(height: 1, color: Colors.green),
           itemBuilder: (_, index) {
             return Dismissible(
-              key: ValueKey(notes[index].id),
+              key: ValueKey(_notes.data[index].id),
               direction: DismissDirection.startToEnd,
               onDismissed: (direction) {
                 //
@@ -64,20 +77,21 @@ class _NoteListState extends State<NoteList> {
                     alignment: Alignment.centerLeft),
               ),
               child: ListTile(
-                title: Text(notes[index].title.toString(),
+                title: Text(_notes.data[index].title.toString(),
                     style: TextStyle(color: Theme.of(context).primaryColor)),
-                subtitle: Text(
-                    "Last editied on ${formatDateTime(notes[index].lastEdited)}"),
+                subtitle: Text("hi"),
+                    //"Last editied on ${formatDateTime(_notes.data[index].lastEdited)}"),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (_) => NoteModify(noteID: notes[index].id)),
+                        builder: (_) => NoteModify(noteID: _notes.data[index].id)),
                   );
                 },
               ),
             );
           },
-          itemCount: notes.length),
+          itemCount: _notes.data.length,
+          ),
     );
   }
 }

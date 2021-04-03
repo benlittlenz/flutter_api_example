@@ -5,10 +5,10 @@ import 'package:flutter_api_requests/models/Note.dart';
 import 'package:http/http.dart' as http;
 
 class NotesService {
-  static const API = 'https://tq-notes-api-jkrgrdggbq-el.a.run.app';
+  static const API = 'tq-notes-api-jkrgrdggbq-el.a.run.app';
   static const headers = {
     'apiKey' : '59a2bb6a-ff85-4adc-aaa8-399bc738ebfa'
-  }
+  };
 
   Future<APIResponse<List<Note>>> getNoteList() {
     return http.get(Uri.https(API, '/notes'), headers: headers)
