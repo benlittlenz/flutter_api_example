@@ -7,6 +7,7 @@ class APIResponse<T> {
   APIResponse({
     this.data,
     this.error = false,
+    this.errorMessage,
   });
-  
+
 }

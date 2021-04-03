@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_api_requests/models/API_Response.dart';
 import 'package:flutter_api_requests/models/Note.dart';
 import 'package:flutter_api_requests/services/notes_service.dart';
 import 'package:flutter_api_requests/views/note_create.dart';
@@ -13,7 +14,9 @@ class NoteList extends StatefulWidget {
 
 class _NoteListState extends State<NoteList> {
   NotesService get service => GetIt.instance<NotesService>();
-  List<Note> notes = [];
+
+  APIResponse<List<Note>> _apiResponse;
+  bool _isLoading = false;
 
   String formatDateTime(DateTime dateTime) {
     return "${dateTime.day}/${dateTime.month}/${dateTime.year}";
@@ -21,9 +24,10 @@ class _NoteListState extends State<NoteList> {
 
   @override
   void initState() {
-    notes = service.getNoteList();
+    _fetchNotes();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
