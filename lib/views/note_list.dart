@@ -56,7 +56,9 @@ class _NoteListState extends State<NoteList> {
         },
         child: Icon(Icons.add),
       ),
-      body: _isLoading ? CircularProgressIndicator() : ListView.separated(
+      body: _isLoading
+        ? Center(child: CircularProgressIndicator())
+        : ListView.separated(
           separatorBuilder: (_, __) => Divider(height: 1, color: Colors.green),
           itemBuilder: (_, index) {
             return Dismissible(
@@ -79,8 +81,8 @@ class _NoteListState extends State<NoteList> {
               child: ListTile(
                 title: Text(_notes.data[index].title.toString(),
                     style: TextStyle(color: Theme.of(context).primaryColor)),
-                subtitle: Text("hi"),
-                    //"Last editied on ${formatDateTime(_notes.data[index].lastEdited)}"),
+                subtitle: Text(
+                    "Last editied on ${formatDateTime(_notes.data[index].lastEdited ?? _notes.data[index].createDateTime)}"),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
