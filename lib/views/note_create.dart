@@ -4,7 +4,6 @@ import 'package:flutter_api_requests/services/notes_service.dart';
 import 'package:get_it/get_it.dart';
 
 class NoteModify extends StatefulWidget {
-
   final String noteID;
   NoteModify({this.noteID});
 
@@ -18,17 +17,28 @@ class _NoteModifyState extends State<NoteModify> {
   NotesService get notesService => GetIt.instance<NotesService>();
 
   String errorMsg;
+  bool _isLoading = false;
   NoteDetail note;
+
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _contentController = TextEditingController();
 
   @override
   void initState() {
-    notesService.getNote(widget.noteID)
-      .then((res) {
-        if(res.error) {
-          errorMsg = res.errorMessage ?? 'An error occured';
-        }
-        note = res.data;
+    setState(() {
+      _isLoading = true;
+    });
+    notesService.getNote(widget.noteID).then((res) {
+      setState(() {
+        _isLoading = false;
       });
+      if (res.error) {
+        errorMsg = res.errorMessage ?? 'An error occured';
+      }
+      note = res.data;
+      _titleController.text = note.title;
+      _contentController.text = note.content;
+    });
     super.initState();
   }
 
@@ -43,6 +53,7 @@ class _NoteModifyState extends State<NoteModify> {
         child: Column(
           children: <Widget>[
             TextField(
+              controller: _titleController,
               decoration: InputDecoration(hintText: 'Note Title'),
             ),
             Container(height: 8),
